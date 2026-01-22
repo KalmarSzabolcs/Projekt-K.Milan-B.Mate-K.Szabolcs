@@ -1,0 +1,76 @@
+Switch 1
+ena
+conf t
+hosname S1
+no ip domain-lookup
+enable secret class123
+banner motd#Pálesz#
+line consol 0 
+pass cisco123
+login
+logg	
+exec-timeout 5
+ser pass
+exit
+line vty 0 15
+pass cisco123
+login
+exec-timeout 5
+exit
+int vlan 1
+ip add 192.168.100.62 255.255.255.192
+no sh
+exit
+ip domain-name gyak.hu
+cry key gen sra
+2048
+
+username admin_S1 priv 15 secret QWasdf/789
+ip ssh ver 2
+line vty 0 15
+login local 
+transport input ssh
+end
+copy run st
+
+
+
+Perht 
+ena 
+conf t 
+hostname Szerver1_Perth
+no ip domain-lookup
+enable secret class123
+banner motd#folosleges#
+line consol 0
+pass cisco123
+login
+logg
+exec-timeout
+exit
+line vty 0 15
+pass cisco123
+login
+exec-timeout 
+exit
+
+ip domain-name gyak.hu
+username admin_perth priv 15 sec cisco123
+cry key gen rsa
+2048
+
+ip ssh ver 2
+line vty 0 15
+login local
+transport input ssh
+end
+copy run st
+
+
+
+
+
+
+
+
+ 
