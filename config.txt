@@ -1,0 +1,180 @@
+🟢 Perth router
+ena
+conf t
+hostname Perth
+no ip domain-lookup
+enable secret class123
+ip domain-name gyak.hu
+
+username admin_Perth priv 15 secret QWasdf/789
+crypto key generate rsa
+2048
+ip ssh version 2
+
+interface g0/0
+ ip address 192.168.10.1 255.255.255.192
+ no shutdown
+
+interface s0/0/0
+ ip address 192.168.10.129 255.255.255.252
+ clock rate 64000
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 192.168.10.130
+
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 5
+
+end
+copy run start
+
+🟢 Kuala Lumpur (KL) router
+ena
+conf t
+hostname KL
+no ip domain-lookup
+enable secret class123
+ip domain-name gyak.hu
+
+username admin_KL priv 15 secret QWasdf/789
+crypto key generate rsa
+2048
+ip ssh version 2
+
+interface g0/0
+ ip address 192.168.10.65 255.255.255.224
+ no shutdown
+
+interface s0/0/0
+ ip address 192.168.10.130 255.255.255.252
+ no shutdown
+
+interface s0/0/1
+ ip address 192.168.10.133 255.255.255.252
+ no shutdown
+
+interface s0/1/0
+ ip address 192.168.10.137 255.255.255.252
+ no shutdown
+
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 5
+
+end
+copy run start
+
+🟢 Sydney router
+ena
+conf t
+hostname Sydney
+no ip domain-lookup
+enable secret class123
+ip domain-name gyak.hu
+
+username admin_Sydney priv 15 secret QWasdf/789
+crypto key generate rsa
+2048
+ip ssh version 2
+
+interface g0/0
+ ip address 192.168.10.97 255.255.255.240
+ no shutdown
+
+interface s0/0/0
+ ip address 192.168.10.134 255.255.255.252
+ no shutdown
+
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 5
+
+end
+copy run start
+
+🟢 Singapore router
+ena
+conf t
+hostname Singapore
+no ip domain-lookup
+enable secret class123
+ip domain-name gyak.hu
+
+username admin_Singapore priv 15 secret QWasdf/789
+crypto key generate rsa
+2048
+ip ssh version 2
+
+interface g0/0
+ ip address 192.168.10.113 255.255.255.240
+ no shutdown
+
+interface s0/0/0
+ ip address 192.168.10.138 255.255.255.252
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 192.168.10.137
+
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 5
+
+end
+copy run start
+
+3️⃣ DHCP – szerverek (statikus IP: 2. cím)
+📌 Példa: Szerver1_Perth
+
+IP: 192.168.10.2
+
+Mask: 255.255.255.192
+
+Gateway: 192.168.10.1
+
+DNS: 8.8.8.8
+
+TFTP: ON
+
+DHCP pool:
+
+Start IP: 192.168.10.3
+
+Max users: 6
+
+(Ugyanez logikailag a többi szervernél a saját hálózatuk szerint)
+
+4️⃣ Switch alapkonfig (mindegyik S1–S4)
+ena
+conf t
+hostname S1
+no ip domain-lookup
+enable secret class123
+
+interface vlan 1
+ ip address 192.168.10.X 255.255.255.XXX
+ no shutdown
+
+ip domain-name gyak.hu
+username admin_S1 priv 15 secret QWasdf/789
+crypto key generate rsa
+2048
+ip ssh version 2
+
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 5
+
+end
+copy run start
+
+5️⃣ Ellenőrzések
+show ip route
+show ip ssh
+ping
+ssh -l admin_Perth 192.168.10.1
